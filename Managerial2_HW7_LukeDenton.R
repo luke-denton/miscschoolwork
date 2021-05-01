@@ -9,7 +9,7 @@ setwd("C:/Users/luked/Downloads")
 
 data<-read.csv("housing.csv",header=T)
 
-############ Q1
+######################## Q1
 
 dat<-na.omit(as.data.frame(cbind(data$SalePrice, data$Lot.Area, data$Garage.Area, data$Full.Bath, data$Fireplaces)))
 N <- dim(dat)[1]
@@ -55,7 +55,7 @@ summary(ols)
 
 
 
-############ Q2
+######################## Q2
 rm(list = ls())
 setwd("C:/Users/luked/Downloads")
 data<-read.csv("housing.csv",header=T)
@@ -130,6 +130,7 @@ summary(samp)
 # than 4.
 
 ######################## Q3
+
 Y = c(1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)
 X1 <- c(0.25, 3, 0.5, 0.4, 4, 3.5, 5.1, 0.15, 0.64, 0.32, 0.89, 1.2, 10, 8, 4.1, 1.1, 0.98, 2.3, 0.97, 0.09, 2.8, 3.9, 0.99, 0.45, 1.8, 6.2, 3.2, 0.88, 1.9, 0.29, 3.8, 2.8, 1.9, 0.23, 0.89, 0.09, 0.13, 1.9, 1.1, 4.2)
 X2 <- c(1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1)
@@ -165,7 +166,83 @@ accmat<-as.data.frame(cbind(dat$Y,post_medians[4:length(post_medians)],rep(0,N))
 accmat[which(accmat[,2]>0.5),3]<-1
 colnames(accmat)<-c("Y","Predicted Prob","Predictions")
 
-# we didn't predict a single one correctly, we predicted all zeros
+#### 3a & 3b
+# we didn't predict a single one correctly, we predicted all zeros so we technically
+# predicted all of the zeros correctly
 
-# Can define a "hit rate" as the percentage of mis-predicted observations
-sum(abs(accmat$Y-accmat$Predictions))/N
+#### 3c
+# it's misleading because when one outcome occurs at a high frequency, you can make it
+# appear that you are predicting lots of values correctly while simply just predicting
+# the same value each and every time, like we did in this example. We had a 0% success 
+# rate predicting the ones.
+
+#### 3d
+# we could try to increase the sample size of our vectors in order to let the model
+# see more observations as a whole.
+
+
+######################## Q4
+
+rm(list = ls())
+
+Y = c(1,1,3,3,3,2,1,3,3,3,1,1,1,1,2,2,2,3,1,2,2,2,3,1,3,2,2,3,1,2,3,2,1,1,2,3,3,1,2,2,3,3,1,2,3,1,1,1,2,3,2,3,1,2,1,3,3,2,2,1,3,3,1,1,2,3,1,2,3,1)
+x1 = c(2.65, 4.25, 4.13, 4.12, 4.09, 3.87, 3.76, 2.72, 2.89, 2.93, 3.01, 3.29, 3.45, 3.47, 4.19, 4.22, 4.05, 3.89, 3.76, 3.50, 3.41, 3.27, 3.20, 3.18, 2.75, 2.78, 2.89, 2.92, 3.01, 3.67, 3.82, 3.41, 3.89, 4.21, 4.20, 3.66, 2.66, 2.89, 2.94, 2.89, 3.02, 3.89, 3.08, 3.24, 3.84, 3.89, 3.91, 4.01, 4.07, 4.16, 2.76, 2.88, 2.92, 3.04, 3.19, 3.09, 3.89, 4.11, 2.92, 3.19, 3.25, 3.82, 3.99, 2.81, 2.79, 4.02, 4.19, 3.29, 3.67, 3.22)
+x2 = c(6.25, 6.50, 6.75, 10, 7.17, 8.12, 9.21, 6.23, 9.18, 10.22, 11.27, 12.19, 11.10, 9.92, 6.88, 7.21, 7.89, 8.22, 8.38, 8.90, 9.12, 9.89, 9.34, 10.25, 11.28, 12.01, 11.67, 12.99, 13.01, 7.18, 6.09, 10.87, 8.89, 9.21, 10.09, 10.75, 11.08, 11.09, 10.08, 10.32, 9.57, 7.88, 6.99, 10.08, 11.32, 11.08, 10.04, 7.62, 8.34, 9.19, 10.08, 10.99, 8.79, 7.62, 8.60, 7.99, 8.12, 8.08, 6.99, 7.24, 8.00, 7.76, 6.43, 7.59, 6.92, 7.03, 7.75, 7.89, 8.01, 7.50)
+x3 = c(0.20,0.29,0.33,0.19,0.09,0.22,0.38,0.21,0.17,0.18,0.24,0.25,0.14,0.30,0.22,0.27,0.14,0.31,0.19,0.22,0.28,0.16,0.23,0.29,0.12,0.10,0.11,0.29,0.18,0.29,0.33,0.31,0.08,0.13,0.21,0.29,0.24,0.28,0.21,0.19,0.26,0.11,0.26,0.19,0.22,0.15,0.14,0.13,0.08,0.11,0.14,0.12,0.11,0.18,0.17,0.15,0.18,0.12,0.09,0.10,0.13,0.14,0.19,0.11,0.09,0.12,0.12,0.10,0.11,0.09)
+x4 =c(1.50,1.55,1.60,1.62,1.78,2.23,2.19,2.50,1.81,1.93,2.01,2,2.47,2.33,1.89,1.98,2.02,
+      2.13,2.23,2.17,2.09,2.22,2.53,1.82,1.89,1.58,1.96,1.99,2.54,1.88,2.23,2.24,2.17,2.19,
+      1.68,1.64,1.55,2.03,2.42,2.09,2.11,2.30,1.57,1.71,2.34,2.08,1.62,1.54,1.79,2.08,1.91,
+      2.19,1.89,1.97,2.22,2.56,1.93,1.98,2.09,2.07,2.46,2.52,1.94,1.50,1.78,2.14,2.13,1.58,
+      2.08,2.09)
+
+# N = number of data points
+# Ncat = number of categories
+N = 70
+Ncat = 4
+
+data <- as.data.frame(cbind(Y,x1,x2,x3,x4))
+dat <- list(Y=data$Y, x1=data$x1, x2=data$x2, x3=data$x3, x4=data$x4, N=N, Ncat=Ncat) 
+
+params <- c("beta02","beta03","beta21","beta22","beta23","beta24","beta31","beta32","beta33","beta34")
+
+# We will set category 1, heating oil, as the reference category
+# The below code is a minimal example; you can shorten it significanly by using loops
+
+jags_model = "
+model {
+  for (i in 1:N) {
+    Y[i] ~ dcat(mu[1:Ncat,i])
+    mu[1:Ncat,i] <- expterm[1:Ncat,i]/sum(expterm[1:Ncat,i])
+    expterm[1,i] <- exp(beta01 + beta11*x1[i] + beta12*x2[i] + beta13*x3[i] + beta14*x4[i])
+    expterm[2,i] <- exp(beta02 + beta21*x1[i] + beta22*x2[i] + beta23*x3[i] + beta24*x4[i])
+    expterm[3,i] <- exp(beta03 + beta31*x1[i] + beta32*x2[i] + beta33*x3[i] + beta34*x4[i])
+  }
+  # Coefficients of zero are assigned to the first category since it's the reference category:
+  beta01 <- 0
+  beta11 <- 0
+  beta12 <- 0
+  beta13 <- 0
+  beta14 <- 0
+  # Priors on all other coefficients in the non-reference category:
+  beta02 ~ dnorm(0, 0.001)
+  beta03 ~ dnorm(0, 0.001)
+  beta21 ~ dnorm(0, 0.001) 
+  beta22 ~ dnorm(0, 0.001)
+  beta23 ~ dnorm(0, 0.001)
+  beta24 ~ dnorm(0, 0.001)
+  beta31 ~ dnorm(0, 0.001)
+  beta32 ~ dnorm(0, 0.001)
+  beta33 ~ dnorm(0, 0.001)
+  beta34 ~ dnorm(0, 0.001)
+}"
+
+jags.m <- jags.model(textConnection(jags_model), data=dat, n.chains=5)
+update(jags.m, n.iter=75000)
+samp <- coda.samples(jags.m, variable.names=params, n.iter=10000)
+
+# it's giving me an error when I try to run the jags.model:
+
+# Error in jags.model(textConnection(jags_model), data = dat, n.chains = 5) : 
+# RUNTIME ERROR:
+#  Compilation error on line 5.
+#  Index out of range taking subset of  expterm
